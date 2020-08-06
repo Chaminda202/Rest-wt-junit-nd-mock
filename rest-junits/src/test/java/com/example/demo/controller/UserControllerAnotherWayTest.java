@@ -43,14 +43,16 @@ class UserControllerAnotherWayTest {
 	private MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
 
 	@Test
-	void findByIdTest() throws Exception{
+	void findByIdConstraintValidationTest() throws Exception{
 		this.mockMvc
 				.perform(get("/users/getById/{id}", 23))
 				.andDo(print())
 				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath("$.statusCode").value(CoreMatchers.equalTo(HttpStatus.BAD_REQUEST.value())))
-				.andExpect(jsonPath("$.details").value(CoreMatchers
-						.hasItem(this.messageSource.getMessage("user.id.not.exist", new Integer[]{23}, Locale.ENGLISH))));
+				.andExpect(jsonPath("$.statusCode")
+						.value(CoreMatchers.equalTo(HttpStatus.BAD_REQUEST.value())))
+				.andExpect(jsonPath("$.details")
+						.value(CoreMatchers.hasItem(this.messageSource.getMessage("user.id.not.exist",
+								new Integer[]{23}, Locale.ENGLISH))));
 	}
 
 	@Test
@@ -76,4 +78,18 @@ class UserControllerAnotherWayTest {
 				.andExpect(content().string(CoreMatchers.notNullValue()));
 	}
 
+	/***
+	 * Check constraint violation scenario
+	 * @throws Exception
+	 */
+	@Test
+	void getUsersByAgeConstraintValidationTest() throws Exception{
+		this.mockMvc
+				.perform(get("/users/age/{age}", 5))
+				.andDo(print())
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.statusCode")
+						.value(CoreMatchers.equalTo(HttpStatus.BAD_REQUEST.value())))
+				.andExpect(jsonPath("$.details").value(CoreMatchers.notNullValue()));
+	}
 }

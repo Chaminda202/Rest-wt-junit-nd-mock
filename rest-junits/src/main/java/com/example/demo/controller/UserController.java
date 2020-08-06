@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/age/{age}")
-    public List<UserDTO> getUsersByAge(@PathVariable Integer age) {
+    public List<UserDTO> getUsersByAge(@PathVariable @Min(value = 10) Integer age) {
         return this.userService.getUsersByAge(age);
     }
 
