@@ -4,6 +4,9 @@ server:
 spring:
   application:
     name: rest-junit
+    version: v1
+    local-date-format: dd-MM-yyyy
+
   devtools:
     restart:
       enabled: true
